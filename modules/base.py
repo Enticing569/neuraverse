@@ -308,4 +308,4 @@ class Base:
 
         except Exception as e:
 
-            return f'{failed_text} | Error: {e}'
+            return f'{failed_text} | Error: {e} '
