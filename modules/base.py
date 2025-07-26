@@ -23,41 +23,6 @@ class Base:
         self.client = client
         self.settings = Settings()
 
-    @controller_log("Wrap Controller")
-    async def wrap_controller(self):
-        wraps = random.randint(1, 4)
-        results = []
-        text = f'{wraps} Wraps:'
-        results.append(text)
-
-        for wrap in range(wraps):
-            try:
-                balance = await self.client.wallet.balance()
-
-                amount = TokenAmount(amount=float(balance.Ether) * self.percent)
-                wrp = await self.wrap_eth(amount=amount)
-                result = f"{amount}"
-                results.append(result)
-
-            except Exception as e:
-                result = f"Wrap Failed | {e}"
-                results.append(result)
-                pass
-
-        await asyncio.sleep(random.randint(2, 6))
-        try:
-            balance = await self.client.wallet.balance(token=Contracts.WETH)
-            unwrap = await self.unwrap_eth(amount=balance)
-
-            result = f"Unwapped: {balance}"
-            results.append(result)
-
-        except Exception as e:
-            result = f"Unwrap Failed | {e}"
-            results.append(result)
-            pass
-
-        return results
     @staticmethod
     async def get_token_price(token_symbol='ETH', second_token: str = 'USDT') -> float | None:
         token_symbol, second_token = token_symbol.upper(), second_token.upper()
