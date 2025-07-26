@@ -17,4 +17,6 @@ if getattr(sys, 'frozen', False):
 else:
     ROOT_DIR = Path(__file__).parent.parent.absolute()
 
+FILES_DIR = os.path.join(ROOT_DIR, 'files')
+
 CIPHER_SUITE = []

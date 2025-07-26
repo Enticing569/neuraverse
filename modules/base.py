@@ -13,15 +13,18 @@ from libs.eth_async.data.models import TokenAmount, TxArgs, Networks
 from libs.eth_async.utils.utils import randfloat
 
 from data.models import Settings, Contracts
+from modules.browser import BaseAsyncSession
 from utils.db_api.models import Wallet
 from utils.logs_decorator import controller_log
 
 
 class Base:
     __module__ = 'Web3 Base'
-    def __init__(self, client: Client):
+    def __init__(self, client: Client, async_session: BaseAsyncSession, wallet: Wallet):
         self.client = client
         self.settings = Settings()
+        self.wallet = wallet
+        self.session: BaseAsyncSession = async_session
 
     @staticmethod
     async def get_token_price(token_symbol='ETH', second_token: str = 'USDT') -> float | None:

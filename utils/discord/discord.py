@@ -4,8 +4,6 @@ import json
 import random
 import re
 import uuid
-import base64
-import secrets
 from functools import wraps
 
 import aiohttp
@@ -14,10 +12,12 @@ from data.config import logger
 from curl_cffi import requests
 
 from settings import DISCORD_SITE_KEY
-from tasks.discord.captcha import get_hcaptcha_solution
-from tasks.discord.headers import create_x_super_properties, create_x_context_properties
+from utils.discord.captcha import get_hcaptcha_solution
+from utils.discord.headers import create_x_super_properties, create_x_context_properties
 
 DEFAULT_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+
+
 NUMBER_OF_ATTEMPTS = 2
 
 class BaseAsyncSession(requests.AsyncSession):
