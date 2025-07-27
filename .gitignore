@@ -10,3 +10,4 @@ test_*
 files/*
 files/
 dev/
+venv

@@ -20,4 +20,4 @@ class Wallet(Base):
 
 
     def __repr__(self):
-        return f'[wallet_id: {self.id}] | [{self.address}]'
+        return f'[{self.id}][{self.address}]'

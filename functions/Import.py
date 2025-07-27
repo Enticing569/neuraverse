@@ -46,7 +46,7 @@ class Import:
             if not proxies:
                 return None
             if i < len(proxies):
-                return proxies[i]
+                return proxies[i % len(proxies)]
 
             return random.choice(proxies)
 
