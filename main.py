@@ -5,9 +5,8 @@ import inquirer
 from colorama import Fore
 from inquirer.themes import GreenPassion
 from rich.console import Console
-
-from functions.activity import activity
 from utils.create_files import create_files
+from functions.activity import activity
 from functions.Import import Import
 
 

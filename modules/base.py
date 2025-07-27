@@ -13,7 +13,7 @@ from libs.eth_async.data.models import TokenAmount, TxArgs, Networks
 from libs.eth_async.utils.utils import randfloat
 
 from data.models import Settings, Contracts
-from modules.browser import BaseAsyncSession, Browser
+from utils.browser import BaseAsyncSession, Browser
 from utils.db_api.models import Wallet
 from utils.logs_decorator import controller_log
 
