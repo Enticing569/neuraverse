@@ -1,5 +1,5 @@
 from libs.eth_async.client import Client
-from modules.base import Base
+from libs.base import Base
 from modules.tesst_module import TestModule
 
 from utils.db_api.models import Wallet

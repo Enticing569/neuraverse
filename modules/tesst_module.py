@@ -1,5 +1,5 @@
 from libs.eth_async.client import Client
-from modules.base import Base
+from libs.base import Base
 from utils.browser import Browser
 from utils.db_api.models import Wallet
 from utils.logs_decorator import controller_log
