@@ -1,4 +1,3 @@
-import settings
 from libs.eth_async.classes import Singleton
 from libs.eth_async.data.models import RawContract, DefaultABIs
 

@@ -10,7 +10,7 @@ from libs.eth_async.client import Client
 from libs.eth_async.data.models import Networks
 from utils.db_api.models import Wallet
 from utils.db_api.wallet_api import db
-from settings import THREADS, SHUFFLE_WALLETS, SLEEP_AFTER_EACH_CYCLE_HOURS, EXACT_WALLETS_TO_RUN
+from data.settings import Settings
 from utils.encryption import check_encrypt_param
 
 
@@ -18,9 +18,9 @@ async def execute(wallets : Wallet, task_func, timeout_hours : int = 0):
     
     while True:
         
-        semaphore = asyncio.Semaphore(min(len(wallets), THREADS))
+        semaphore = asyncio.Semaphore(min(len(wallets), Settings().threads))
 
-        if SHUFFLE_WALLETS:
+        if Settings().shuffle_wallets:
             random.shuffle(wallets)
 
         async def sem_task(wallet : Wallet):
@@ -45,8 +45,8 @@ async def activity(action: int):
     all_wallets = db.all(Wallet)
 
     # Filter wallets if EXACT_WALLETS_TO_USE is defined
-    if EXACT_WALLETS_TO_RUN:
-        wallets = [wallet for i, wallet in enumerate(all_wallets, start=1) if i in EXACT_WALLETS_TO_RUN]
+    if Settings().exact_wallets_to_run:
+        wallets = [wallet for i, wallet in enumerate(all_wallets, start=1) if i in Settings().exact_wallets_to_run]
     else:
         wallets = all_wallets
 
@@ -54,7 +54,7 @@ async def activity(action: int):
         await execute(wallets, test_activity)
 
     elif action == 2:
-        await execute(wallets, test_requests, SLEEP_AFTER_EACH_CYCLE_HOURS)
+        await execute(wallets, test_requests, Settings().sleep_after_each_cycle_hours)
 
     elif action == 3:
         await execute(wallets, test_web3)

@@ -19,6 +19,8 @@ else:
 
 FILES_DIR = os.path.join(ROOT_DIR, 'files')
 WALLETS_DB = os.path.join(FILES_DIR, 'wallets.db')
+SETTINGS_FILE = os.path.join(FILES_DIR, 'settings.yaml') 
+TEMPLATE_SETTINGS_FILE = os.path.join(ROOT_DIR, 'utils', 'settings_template.yaml') 
 
 SALT_PATH = os.path.join(FILES_DIR, 'salt.dat')
 

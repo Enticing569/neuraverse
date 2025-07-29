@@ -1,14 +1,11 @@
 from curl_cffi.requests import AsyncSession
 from loguru import logger
 
-import settings
-
-BOT_ID = settings.TG_BOT_ID
-ID = settings.TG_USER_ID
+from data.settings import Settings
+ 
 
 async def tg_sender(msg=None):
-    bot_id = BOT_ID
-    id = ID
+ 
     special_chars = ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!']
     for char in special_chars:
         msg = msg.replace(char, f'\\{char}')
@@ -16,10 +13,10 @@ async def tg_sender(msg=None):
     try:
         json_data = {
             'parse_mode':'MarkdownV2',
-            'chat_id': id,
+            'chat_id': Settings().tg_user_id,
             'text': msg
         }
-        url = f'https://api.telegram.org/bot{bot_id}/sendMessage'
+        url = f'https://api.telegram.org/bot{Settings().tg_bot_id}/sendMessage'
 
         async with AsyncSession() as session:
             r = await session.post(url=url, json=json_data)

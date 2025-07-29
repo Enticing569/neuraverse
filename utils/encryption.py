@@ -9,42 +9,23 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from loguru import logger
 
-import settings
+from data.settings import Settings
 from data import config
+from data.config import SALT_PATH
 
 import base64
 import hashlib
 from cryptography.fernet import Fernet
 
-from data.config import SALT_PATH
+def _derive_fernet_key(password: bytes) -> bytes:
+
+    digest = hashlib.sha256(password).digest()
+    return base64.urlsafe_b64encode(digest)
 
 
-def _derive_fernet_key(password: bytes, salt=None) -> bytes:
-
-    try:
-        if salt:
-            kdf = PBKDF2HMAC(
-                algorithm=hashes.SHA256(),
-                length=32,
-                salt=salt,
-                iterations=100000,
-                backend=default_backend()
-            )
-            return base64.urlsafe_b64encode(kdf.derive(password))
-
-        else:
-            digest = hashlib.sha256(password).digest()
-            return base64.urlsafe_b64encode(digest)
-
-    except TypeError:
-        print('Error! Check salt file! Salt must be bites string')
-        sys.exit(1)
-
-
-
-
-def set_cipher_suite(password) -> None:
-    if settings.PRIVATE_KEY_ENCRYPTION:
+def set_cipher_suite(password) -> Fernet:
+    if Settings().private_key_encryption:
+        cipher = Fernet(_derive_fernet_key(password))
 
         if not os.path.exists(SALT_PATH):
 
@@ -62,25 +43,19 @@ def set_cipher_suite(password) -> None:
 
 def get_private_key(enc_value: str) -> str:
     try:
-        if settings.PRIVATE_KEY_ENCRYPTION:
-            if 'gAAAA' in enc_value:
-                return config.CIPHER_SUITE.decrypt(enc_value.encode()).decode()
-
-        return enc_value
+        if Settings().private_key_encryption:
+            return config.CIPHER_SUITE.decrypt(enc_value.encode()).decode()
     except Exception:
         raise InvalidToken(f"{enc_value} | wrong password! Decrypt failed")
         #sys.exit(f"{enc_value} | wrong password! Decrypt failed")
 
 def prk_encrypt(value: str) -> str:
-    if settings.PRIVATE_KEY_ENCRYPTION:
-        if '0x' in value:
-            return config.CIPHER_SUITE.encrypt(value.encode()).decode()
-
-    return value
+    if Settings().private_key_encryption:
+        return config.CIPHER_SUITE.encrypt(value.encode()).decode()
 
 
 def check_encrypt_param(confirm: bool = False, attempts: int = 3):
-    if settings.PRIVATE_KEY_ENCRYPTION:
+    if Settings().private_key_encryption:
 
         for try_num in range(1, attempts + 1):
             pwd1 = getpass.getpass(

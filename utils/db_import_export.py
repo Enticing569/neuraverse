@@ -18,7 +18,7 @@ from libs.eth_async.utils.files import touch
 from utils.db_api.wallet_api import db, get_wallet_by_address
 from utils.db_api.models import Wallet
 from utils.encryption import get_private_key, prk_encrypt
-import settings
+from data.settings import Settings
 
 def remove_line_from_file(value: str, filename: str) -> bool:
     file_path = os.path.join(FILES_DIR, filename)
@@ -194,7 +194,7 @@ class Export:
         buf = {key: [] for key in Export._FILES.keys()}
 
         for w in wallets:
-            prk = get_private_key(w.private_key) if settings.PRIVATE_KEY_ENCRYPTION else w.private_key
+            prk = get_private_key(w.private_key) if Settings().private_key_encryption else w.private_key
             buf["private_key"].append(prk)
 
             buf["proxy"].append(w.proxy or "")

@@ -6,7 +6,7 @@ from utils.db_api.models import Wallet
 from utils.db_api.wallet_api import update_twitter_token
 
 from data.config import logger
-from data.models import Settings
+ 
 
 #TODO Move to Exception file
 class BadTwitter(Exception):
@@ -69,7 +69,6 @@ class TwitterClient():
         # Add fields for tracking errors
         self.last_error = None
         self.error_count = 0
-        self.settings = Settings()
 
     async def initialize(self) -> bool:
         """
