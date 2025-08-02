@@ -20,6 +20,10 @@ from .other import (
     encode_x_client_transaction_id,
 )
 
+from .xpff import (
+    XPFFHeaderGenerator
+)
+
 
 __all__ = [
     "copy_file",
@@ -37,4 +41,5 @@ __all__ = [
     "hidden_value",
     "tweets_data_from_instructions",
     "encode_x_client_transaction_id",
+    "XPFFHeaderGenerator",
 ]

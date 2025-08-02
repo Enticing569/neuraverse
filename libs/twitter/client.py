@@ -4,6 +4,7 @@ import asyncio
 import base64
 import json
 import re
+import sys
 
 from loguru import logger
 from curl_cffi import requests
@@ -35,7 +36,7 @@ from .utils import parse_oauth_html
 from .utils import parse_unlock_html
 from .utils import tweets_data_from_instructions
 from .utils import encode_x_client_transaction_id
-
+from .utils import XPFFHeaderGenerator
 
 class Client(BaseHTTPClient):
     _BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA"
@@ -84,6 +85,7 @@ class Client(BaseHTTPClient):
         max_unlock_attempts: int = 5,
         auto_relogin: bool = True,
         update_account_info_on_startup: bool = True,
+        debug_mode: bool = False,
         **session_kwargs,
     ):
         super().__init__(**session_kwargs)
@@ -93,8 +95,12 @@ class Client(BaseHTTPClient):
         self.max_unlock_attempts = max_unlock_attempts
         self.auto_relogin = auto_relogin
         self._update_account_info_on_startup = update_account_info_on_startup
-
+        self.xpff = XPFFHeaderGenerator(user_agent=self._session.headers["User-Agent"])
         self.gql = GQLClient(self)
+ 
+        if not debug_mode:
+            logger.remove()
+            logger.add(sys.stderr, level="INFO") # only INFO and above will print
 
     async def __aenter__(self):
         await self.on_startup()
@@ -115,7 +121,12 @@ class Client(BaseHTTPClient):
 
         url = URL(url)
         headers["x-client-transaction-id"] = encode_x_client_transaction_id(url.path)
-
+        
+        guest_id = self._session.cookies.get("guest_id")
+        
+        if guest_id:
+            headers["X-Xp-Forwarded-For"] = self.xpff.generate_xpff(guest_id)
+            
         if bearer:
             headers["authorization"] = f"Bearer {self._BEARER_TOKEN}"
 

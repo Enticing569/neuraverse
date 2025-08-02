@@ -33,7 +33,8 @@ class BaseAsyncSession(requests.AsyncSession):
     ):
         self._proxy = None
         headers = session_kwargs["headers"] = session_kwargs.get("headers") or {}
-        headers.update(self.DEFAULT_HEADERS)
+        for k, v in self.DEFAULT_HEADERS.items():
+            headers.setdefault(k, v)
         session_kwargs["impersonate"] = (
             session_kwargs.get("impersonate") or self.DEFAULT_IMPERSONATE
         )

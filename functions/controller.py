@@ -36,4 +36,4 @@ class Controller:
         # await self.test_module.twitter_test_retweet()
         # await self.test_module.twitter_test_post()
         await self.test_module.twitter.close()
-        return 
+        return "success"

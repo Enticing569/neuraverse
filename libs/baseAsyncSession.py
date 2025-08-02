@@ -2,10 +2,12 @@ from curl_cffi import requests
 
 FINGERPRINT_DEFAULT = {
     "impersonate": "chrome136",   
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
-    "sec-ch-ua-platform": "Windows",
-    "sec-ch-ua": 'Chromium";v="136", "Google Chrome";v="136", "Not.A/Brand";v="99',
-    "accept-language" : "en-US,en;q=0.9",
+    "headers": {
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+        "sec-ch-ua-platform": "Windows",
+        "sec-ch-ua": 'Chromium";v="136", "Google Chrome";v="136", "Not.A/Brand";v="99',
+        "accept-language" : "en-US,en;q=0.9",
+    }
 }
 
 class BaseAsyncSession(requests.AsyncSession):
@@ -17,12 +19,7 @@ class BaseAsyncSession(requests.AsyncSession):
     ):
         headers = session_kwargs.pop("headers", {})
 
-        headers.update({
-            "user-agent": fingerprint.get("user-agent"),
-            "sec-ch-ua-platform": fingerprint.get("sec-ch-ua-platform"),
-            "sec-ch-ua": fingerprint.get("sec-ch-ua"),
-            "accept-language": fingerprint.get("accept-language"),
-        })
+        headers.update( fingerprint.get("headers", {}))
 
         init_kwargs = {
             "headers": headers,

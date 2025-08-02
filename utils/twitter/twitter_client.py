@@ -9,9 +9,8 @@ import libs.twitter as twitter
 from libs.twitter.utils import remove_at_sign
 from utils.db_api.models import Wallet
 from utils.db_api.wallet_api import update_twitter_token
-
 from data.config import logger
- 
+import libs.baseAsyncSession as BaseAsyncSession 
 
 #TODO Move to Exception file
 class BadTwitter(Exception):
@@ -91,7 +90,9 @@ class TwitterClient():
         """
         # Create Twitter client
         self.twitter_client = twitter.Client(
-            self.twitter_account, **self.client_config
+            self.twitter_account, **self.client_config, 
+            headers=BaseAsyncSession.FINGERPRINT_DEFAULT.get("headers", {}),
+            impersonate=BaseAsyncSession.FINGERPRINT_DEFAULT.get("impersonate", "chrome136")
         )
 
         # Establish connection
