@@ -3,12 +3,13 @@ import platform
 
 import inquirer
 from colorama import Fore
-from inquirer.themes import GreenPassion
+from inquirer import themes
 from rich.console import Console
 from utils.create_files import create_files
 from functions.activity import activity
 from utils.db_import_export import Import, Export
 from utils.encryption import check_encrypt_param
+from utils.output import show_channel_info
 
 console = Console()
 
@@ -35,7 +36,7 @@ async def choose_action():
         )
     ]
 
-    answers = inquirer.prompt(cat_question, theme=GreenPassion())
+    answers = inquirer.prompt(cat_question, theme=themes.Default())
     category = answers.get("category")
 
     if category == "Exit":
@@ -58,7 +59,7 @@ async def choose_action():
         )
     ]
 
-    act_answer = inquirer.prompt(act_question, theme=GreenPassion())
+    act_answer = inquirer.prompt(act_question, theme=themes.Default())
     action = act_answer["action"]
 
     if action == "Import wallets to Database":
@@ -94,7 +95,9 @@ async def main():
     await choose_action()
 
 if __name__ == '__main__':
-
+    
+    show_channel_info(PROJECT)
+    
     if platform.system() == "Windows":
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
