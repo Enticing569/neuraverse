@@ -21,7 +21,7 @@ class BaseAsyncSession(requests.AsyncSession):
         "sec-ch-ua-mobile": "?0",
         "sec-fetch-dest": "empty",
         "sec-fetch-mode": "cors",
-        "sec-fetch-site": "ssame-site",
+        "sec-fetch-site": "same-origin",
         "connection": "keep-alive",
     }
     DEFAULT_IMPERSONATE = requests.BrowserType.chrome120
