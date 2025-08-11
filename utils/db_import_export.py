@@ -20,6 +20,22 @@ from utils.db_api.models import Wallet
 from utils.encryption import get_private_key, prk_encrypt
 from data.settings import Settings
 
+def parse_proxy(proxy: str | None) -> Optional[str]:
+    if not proxy:
+        return None
+    if proxy.startswith('http'):
+        return proxy
+    elif "@" in proxy and not proxy.startswith('http'):
+        return "http://" + proxy
+    else:
+        value = proxy.split(':')
+        if len(value) == 4:
+            ip, port, login, password = value
+            return f'http://{login}:{password}@{ip}:{port}'
+        else:
+            print(f"Invalid proxy format: {proxy}")
+            return None 
+
 def remove_line_from_file(value: str, filename: str) -> bool:
     file_path = os.path.join(FILES_DIR, filename)
 
@@ -77,7 +93,7 @@ class Import:
         for i in range(record_count):
             wallets.append({
                 "private_key": private_keys[i],
-                "proxy": pick_proxy(i),
+                "proxy": parse_proxy(pick_proxy(i)),
                 "twitter_token": twitter_tokens[i] if i < len(twitter_tokens) else None,
                 "discord_token": discord_tokens[i] if i < len(discord_tokens) else None,
             })
@@ -122,7 +138,7 @@ class Import:
                     wallet_instance.private_key = prk_encrypt(encoded_private_key)
                     changed = True
 
-                if wallet_instance.proxy != wl.proxy:
+                if wallet_instance.proxy != parse_proxy(wl.proxy):
                     wallet_instance.proxy = wl.proxy
                     changed = True
 
