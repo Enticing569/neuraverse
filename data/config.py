@@ -25,3 +25,6 @@ TEMPLATE_SETTINGS_FILE = os.path.join(ROOT_DIR, 'utils', 'settings_template.yaml
 SALT_PATH = os.path.join(FILES_DIR, 'salt.dat')
 
 CIPHER_SUITE = None
+
+LOGS_DIR = os.path.join(FILES_DIR, 'logs')
+LOG_FILE = os.path.join(LOGS_DIR, 'log.log')
