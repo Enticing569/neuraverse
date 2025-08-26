@@ -186,7 +186,7 @@ async def check_for_updates(
         repo_path: Path to the Git repository (default: current directory).
         remote_name: Name of the remote (default: "origin").
     """
-    if not Settings().check_updates:
+    if not Settings().check_git_updates:
         return
     logger.debug(f"Checking for updates in {repo_owner}/{repo_name}")
 

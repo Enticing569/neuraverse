@@ -5,7 +5,7 @@ import inquirer
 from colorama import Fore
 from inquirer import themes
 from rich.console import Console
-from utils.create_files import create_files
+from utils.create_files import create_files, reset_folder
 from functions.activity import activity
 from utils.db_import_export_sync import Import, Export
 from utils.encryption import check_encrypt_param
@@ -32,6 +32,7 @@ async def choose_action():
             choices=[
                 "DB Actions",
                 PROJECT,
+                "Utils",
                 "Exit"
             ],
         )
@@ -51,6 +52,9 @@ async def choose_action():
 
     if category == PROJECT:
         actions = PROJECT_ACTIONS
+
+    if category == "Utils":
+        actions = ["Reset files Folder"]
 
     act_question = [
         inquirer.List(
@@ -84,6 +88,13 @@ async def choose_action():
 
     elif action == "Start Testing Twitter":
         await activity(action=4)
+
+    elif action == "Reset files Folder":
+        console.print("This action will delete the files folder and reset it.") 
+        answer = input("Are you sure you want to perform this action? y/N ")
+        if answer.lower() == "y":
+            reset_folder()
+            console.print("Files folder success reset")
 
     elif action == "Exit":
         console.print(f"[bold red]Exiting {PROJECT}...[/bold red]")

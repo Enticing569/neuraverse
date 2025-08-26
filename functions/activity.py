@@ -44,11 +44,21 @@ async def activity(action: int):
     check_encrypt_param()
     all_wallets = db.all(Wallet)
 
-    # Filter wallets if EXACT_WALLETS_TO_USE is defined
-    if Settings().exact_wallets_to_run:
-        wallets = [wallet for i, wallet in enumerate(all_wallets, start=1) if i in Settings().exact_wallets_to_run]
+    range_wallets = Settings().range_wallets_to_run
+    if range_wallets != [0, 0]: 
+        start, end = range_wallets
+        wallets = [
+            wallet for i, wallet in enumerate(all_wallets, start=1)
+            if start <= i <= end
+        ]
     else:
-        wallets = all_wallets
+        if Settings().exact_wallets_to_run:
+            wallets = [
+                wallet for i, wallet in enumerate(all_wallets, start=1)
+                if i in Settings().exact_wallets_to_run
+            ]
+        else:
+            wallets = all_wallets
 
     if action == 1:
         await execute(wallets, test_activity)

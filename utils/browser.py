@@ -6,7 +6,7 @@ from libs.baseAsyncSession import BaseAsyncSession
 class Browser:
     __module__ = 'Browser'
 
-    def __init__(self, wallet: Optional[Wallet] = None):
+    def __init__(self, wallet: Optional[Wallet] = None): 
         self.wallet: Optional[Wallet] = wallet
         self.async_session: Optional[BaseAsyncSession] = None
 

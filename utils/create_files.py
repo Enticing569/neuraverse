@@ -1,6 +1,7 @@
 from data.config import FILES_DIR, SETTINGS_FILE, TEMPLATE_SETTINGS_FILE
 from libs.eth_async.utils.files import touch
 import os
+import shutil
 from ruamel.yaml import YAML
 from ruamel.yaml.comments import CommentedMap
 from copy import deepcopy
@@ -77,5 +78,9 @@ def merge_settings(current: CommentedMap, template: CommentedMap) -> CommentedMa
                 result.ca.items[key] = deepcopy(current.ca.items[key])
 
     return result
+
+def reset_folder():
+    shutil.rmtree(FILES_DIR)
+    create_files()
 
 create_files()
