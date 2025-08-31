@@ -19,6 +19,7 @@ from utils.db_api.wallet_api import db, get_wallet_by_address
 from utils.db_api.models import Wallet
 from utils.encryption import get_private_key, prk_encrypt
 from data.settings import Settings
+from utils.encryption import check_encrypt_param
 
 def parse_proxy(proxy: str | None) -> Optional[str]:
     if not proxy:
@@ -69,7 +70,7 @@ class Import:
 
     @staticmethod
     def parse_wallet_from_txt() -> List[Dict[str, Optional[str]]]:
-
+        
         private_keys   = read_lines("private_keys.txt")
         proxies        = read_lines("proxy.txt")
         twitter_tokens = read_lines("twitter_tokens.txt")
@@ -102,6 +103,9 @@ class Import:
 
     @staticmethod
     async def wallets():
+        
+        check_encrypt_param(confirm=True)
+                
         raw_wallets = Import.parse_wallet_from_txt()
 
         wallets = [SimpleNamespace(**w) for w in raw_wallets]
@@ -214,7 +218,11 @@ class Sync:
 
     @staticmethod
     async def sync_wallets_with_tokens_and_proxies():
-       
+        
+        if not check_encrypt_param():
+            logger.error(f"Decryption Failed | Wrong Password")
+            return
+    
         wallet_auxiliary_data_raw  = Sync.parse_tokens_and_proxies_from_txt()
 
         wallet_auxiliary_data = [SimpleNamespace(**w) for w in wallet_auxiliary_data_raw]
@@ -286,7 +294,11 @@ class Export:
 
     @staticmethod
     async def wallets_to_txt() -> None:
-
+        
+        if not check_encrypt_param():
+            logger.error(f"Decryption Failed | Wrong Password")
+            return
+        
         wallets: List[Wallet] = db.all(Wallet)
 
         if not wallets:

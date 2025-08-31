@@ -42,6 +42,10 @@ async def execute(wallets : List[Wallet], task_func, random_pause_wallet_after_c
         if random_pause_wallet_after_completion == 0:
             break
  
+        # update dynamically the pause time
+        random_pause_wallet_after_completion = random.randint(Settings().random_pause_wallet_after_completion_min,
+                                                              Settings().random_pause_wallet_after_completion_max)
+        
         next_run = datetime.now() + timedelta(seconds=random_pause_wallet_after_completion)
         logger.info(
             f"Sleeping {random_pause_wallet_after_completion} seconds. "
@@ -50,7 +54,9 @@ async def execute(wallets : List[Wallet], task_func, random_pause_wallet_after_c
         await asyncio.sleep(random_pause_wallet_after_completion)
 
 async def activity(action: int):
-    check_encrypt_param()
+    if not check_encrypt_param():
+        logger.error(f"Decryption Failed | Wrong Password")
+        return
 
     try:
         check_password_wallet = db.one(Wallet, Wallet.id == 1)
