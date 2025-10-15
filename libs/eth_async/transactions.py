@@ -98,9 +98,7 @@ class Tx(AutoRepr):
             Dict[str, Any]: the transaction receipt.
 
         """
-        self.receipt = await client.transactions.wait_for_receipt(
-            w3=client.w3, tx_hash=self.hash, timeout=timeout, poll_latency=poll_latency
-        )
+        self.receipt = await client.transactions.wait_for_receipt(w3=client.w3, tx_hash=self.hash, timeout=timeout, poll_latency=poll_latency)
         return self.receipt
 
     async def decode_input_data(self):
@@ -272,9 +270,7 @@ class Transactions:
         )
 
     @staticmethod
-    async def wait_for_receipt(
-        w3: AsyncWeb3, tx_hash: str | _Hash32, timeout: int | float = 120, poll_latency: float = 0.1
-    ) -> dict[str, Any]:
+    async def wait_for_receipt(w3: AsyncWeb3, tx_hash: str | _Hash32, timeout: int | float = 120, poll_latency: float = 0.1) -> dict[str, Any]:
         """
         Wait for a transaction receipt.
 
@@ -428,9 +424,7 @@ class Transactions:
         next_page_params = None
         nfts = []
         while True:
-            response = await self.client.network.api.functions.tokens.nft_instances(
-                address=str(nft_address), next_page_params=next_page_params
-            )
+            response = await self.client.network.api.functions.tokens.nft_instances(address=str(nft_address), next_page_params=next_page_params)
             next_page_params = response["next_page_params"]
             for item in response["items"]:
                 if item.get("owner"):
