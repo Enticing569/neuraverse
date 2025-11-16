@@ -48,8 +48,10 @@ class Base:
                 await asyncio.sleep(5)
         raise ValueError(f"Can not get {token_symbol + second_token} price from Binance")
 
-    async def approve_interface(self, token_address, spender, amount: TokenAmount | None = None) -> bool:
+    async def approve_interface(self, token_address, spender, amount: TokenAmount | None = None, title: str = "") -> bool:
+        
         balance = await self.client.wallet.balance(token=token_address)
+
         if balance.Wei <= 0:
             return False
 
@@ -61,14 +63,13 @@ class Base:
         if amount.Wei <= approved.Wei:
             return True
 
-        # print(f'Trying to approve: {token_address} {amount.Ether} - {amount.Wei}')
-
+        logger.info(f"{self.wallet} | Requesting approval for {amount.Ether} {title}")
+        
         tx = await self.client.transactions.approve(token=token_address, spender=spender, amount=amount)
 
         receipt = await tx.wait_for_receipt(client=self.client, timeout=300)
         if receipt:
             return True
-
         return False
 
     async def get_token_info(self, contract_address):

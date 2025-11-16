@@ -19,10 +19,13 @@ console = Console()
 
 
 PROJECT_ACTIONS = [
-    "Start Testing Project",
-    "Start Testing Requests",
-    "Start Testing Web3",
-    "Start Testing Twitter",
+    "1. Random Activity",
+    "2. Neura portal tasks",
+    "3. Update points",
+    "4. AI Talk",
+    "5. Swaps",
+    "6. Bridge",
+    "7. Bridge Sepolia -> Neura(all ANKR)",
     "Back",
 ]
 
@@ -80,17 +83,26 @@ async def choose_action():
         console.print(f"[bold blue]Starting Export Database to CSV[/bold blue]")
         await Export.data_to_csv()
 
-    elif action == "Start Testing Project":
+    elif action == "1. Random Activity":
         await activity(action=1)
 
-    elif action == "Start Testing Requests":
+    elif action == "2. Neura portal tasks":
         await activity(action=2)
 
-    elif action == "Start Testing Web3":
+    elif action == "3. Update points":
         await activity(action=3)
 
-    elif action == "Start Testing Twitter":
+    elif action == "4. AI Talk":
         await activity(action=4)
+
+    elif action == "5. Swaps":
+        await activity(action=5)
+
+    elif action == "6. Bridge":
+        await activity(action=6)
+        
+    elif action == "7. Bridge Sepolia -> Neura(all ANKR)":
+        await activity(action=7)
 
     elif action == "1. Reset files Folder":
         console.print("This action will delete the files folder and reset it.")

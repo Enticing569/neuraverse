@@ -47,5 +47,19 @@ def update_twitter_token(private_key: str, updated_token: str | None) -> bool:
     return True
 
 
+def update_wallet_info(address: str, name_column: str, data: str | dict | None = None) -> bool:
+    wallet = db.one(Wallet, Wallet.address == address)
+
+    if not wallet:
+        return False
+
+    if not hasattr(Wallet, name_column):
+        return False
+
+    setattr(wallet, name_column, data)
+    db.commit()
+    return True
+
+
 db = DB(f"sqlite:///{WALLETS_DB}", echo=False, pool_recycle=3600, connect_args={"check_same_thread": False})
 db.create_tables(Base)

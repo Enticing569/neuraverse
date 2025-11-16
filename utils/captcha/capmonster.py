@@ -36,17 +36,15 @@ class Capmonster:
                 continue
         return False
 
-    async def create_task(self):
+    async def create_task(self, website_url: str, website_key: str, task_type: str = None):
         url = "https://api.capmonster.cloud/createTask"
 
         json_data = {
             "clientKey": API_KEY_CAPMONSTER,
             "task": {
-                "type": "GeeTestTaskProxyless",
-                "websiteURL": "https://galxe.com/accountSetting?tab=SocialLinlk",
-                "gt": "244bcb8b9846215df5af4c624a750db4",
-                "version": 4,
-                "userAgent": self.data.user_agent,
+                "websiteURL": website_url,
+                "websiteKey": website_key
+
             },
         }
 

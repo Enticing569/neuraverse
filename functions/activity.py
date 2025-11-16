@@ -19,7 +19,7 @@ async def random_sleep_before_start(wallet):
     now = datetime.now()
 
     logger.info(f"{wallet} Start at {now + timedelta(seconds=random_sleep)} sleep {random_sleep} seconds before start actions")
-    await asyncio.sleep(random_sleep)
+    #await asyncio.sleep(random_sleep)
 
 
 async def execute(wallets: List[Wallet], task_func, random_pause_wallet_after_completion: int = 0):
@@ -70,63 +70,171 @@ async def activity(action: int):
     if action == 1:
         await execute(
             wallets,
-            test_activity,
+            random_activity_task,
             random.randint(Settings().random_pause_wallet_after_completion_min, Settings().random_pause_wallet_after_completion_max),
         )
 
     elif action == 2:
-        await execute(wallets, test_requests)
+        await execute(
+            wallets,
+            portal_task,
+        )
 
     elif action == 3:
         await execute(
             wallets,
-            test_web3,
-            random.randint(Settings().random_pause_wallet_after_completion_min, Settings().random_pause_wallet_after_completion_max),
+            update_points,
         )
 
     elif action == 4:
-        await execute(wallets, test_twitter)
+        await execute(
+            wallets,
+            ai_talk,
+        )
+
+    elif action == 5:
+        await execute(
+            wallets,
+            swaps,
+        )
+
+    elif action == 6:
+        await execute(
+            wallets,
+            bridge,
+        )
+        
+    elif action == 7:
+        await execute(
+            wallets,
+            bridge_all_to_neura,
+        )
 
 
-async def test_activity(wallet):
+async def random_activity_task(wallet):
+    try:
+        await random_sleep_before_start(wallet=wallet)
+
+        client = Client(private_key=wallet.private_key, proxy=wallet.proxy, network=Networks.NeuraTestnet)
+        client_sepolia = Client(private_key=wallet.private_key, proxy=wallet.proxy, network=Networks.Sepolia)
+        controller = Controller(client=client, wallet=wallet, client_sepolia=client_sepolia)
+
+        actions = await controller.build_actions()
+
+        if actions:
+            logger.info(f"{wallet} | Started Activity Tasks | Wallet will do {len(actions)} actions")
+
+            for action in actions:
+                sleep = random.randint(Settings().random_pause_between_actions_min, Settings().random_pause_between_actions_max)
+
+                try:
+                    await action()
+                except Exception as e:
+                    logger.error(f"Error — {e}")
+                    continue
+
+                finally:
+                    await asyncio.sleep(sleep)
+
+        await controller.update_db_by_user_info()
+
+    except asyncio.CancelledError:
+        raise
+
+    except Exception as e:
+        logger.error(f"Core | Random Activity | {wallet} | {e}")
+        raise e
+
+
+async def portal_task(wallet):
     await random_sleep_before_start(wallet=wallet)
 
-    client = Client(private_key=wallet.private_key, proxy=wallet.proxy, network=Networks.Ethereum)
-
+    client = Client(private_key=wallet.private_key, proxy=wallet.proxy, network=Networks.NeuraTestnet)
     controller = Controller(client=client, wallet=wallet)
 
-    c = await controller.testings_info()
-    logger.success(c)
+    try:
+        await controller.complete_quests()
+    except Exception as e:
+        logger.error(f"Error — {e}")
 
 
-async def test_requests(wallet):
+async def connect_socials(wallet):
+    # TODO: ДОРАБОАТЬ ПОСЛЕ УСПЕШНОГО КОНЕКТА ТВИТТЕРА
+
     await random_sleep_before_start(wallet=wallet)
 
-    client = Client(private_key=wallet.private_key, proxy=wallet.proxy, network=Networks.Ethereum)
-
+    client = Client(private_key=wallet.private_key, proxy=wallet.proxy, network=Networks.NeuraTestnet)
     controller = Controller(client=client, wallet=wallet)
 
-    c = await controller.testings_requests()
-    logger.success(c)
+    try:
+        await controller.connect_twitter()
+    except Exception as e:
+        logger.error(f"Error — {e}")
 
 
-async def test_web3(wallet):
+async def update_points(wallet):
     await random_sleep_before_start(wallet=wallet)
 
-    client = Client(private_key=wallet.private_key, proxy=wallet.proxy, network=Networks.Ethereum)
-
+    client = Client(private_key=wallet.private_key, proxy=wallet.proxy, network=Networks.NeuraTestnet)
     controller = Controller(client=client, wallet=wallet)
 
-    c = await controller.testing_web3()
-    logger.success(c)
+    try:
+        await controller.update_db_by_user_info()
+    except Exception as e:
+        logger.error(f"Error — {e}")
 
 
-async def test_twitter(wallet):
+async def ai_talk(wallet):
     await random_sleep_before_start(wallet=wallet)
 
-    client = Client(private_key=wallet.private_key, proxy=wallet.proxy, network=Networks.Ethereum)
-
+    client = Client(private_key=wallet.private_key, proxy=wallet.proxy, network=Networks.NeuraTestnet)
     controller = Controller(client=client, wallet=wallet)
 
-    c = await controller.testing_twitter()
-    logger.success(c)
+    try:
+        await controller.run_ai_chat_session()
+    except Exception as e:
+        logger.error(f"Error — {e}")
+
+
+async def swaps(wallet):
+    await random_sleep_before_start(wallet=wallet)
+
+    client = Client(private_key=wallet.private_key, proxy=wallet.proxy, network=Networks.NeuraTestnet)
+    controller = Controller(client=client, wallet=wallet)
+
+    try:
+        await controller.execute_zotto_swaps()
+    except Exception as e:
+        logger.error(f"Error — {e}")
+
+
+async def bridge(wallet):
+    await random_sleep_before_start(wallet=wallet)
+
+    client = Client(private_key=wallet.private_key, proxy=wallet.proxy, network=Networks.NeuraTestnet)
+    client_sepolia = Client(private_key=wallet.private_key, proxy=wallet.proxy, network=Networks.Sepolia)
+    controller = Controller(client=client, wallet=wallet, client_sepolia=client_sepolia)
+
+    try:
+        await controller.execute_auto_bridge()
+    except Exception as e:
+        logger.error(f"Error — {e}")
+        
+
+async def bridge_all_to_neura(wallet):
+    
+    client = Client(private_key=wallet.private_key, proxy=wallet.proxy, network=Networks.NeuraTestnet)
+    client_sepolia = Client(private_key=wallet.private_key, proxy=wallet.proxy, network=Networks.Sepolia)
+    controller = Controller(client=client, wallet=wallet, client_sepolia=client_sepolia)
+
+    try:
+        await controller.execute_auto_bridge(bridge_all_to_neura=True)
+    except Exception as e:
+        logger.error(f"Error — {e}")
+    
+        
+    
+    
+    
+
+

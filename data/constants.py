@@ -1,2 +1,15 @@
-PROJECT_NAME = "Base Architecture"
-PROJECT_SHORT_NAME = "base_arch"
+PROJECT_NAME = "Neuraverse"
+PROJECT_SHORT_NAME = "neura"
+
+
+DEFAULT_HEADERS = {
+    "accept": "application/json, text/plain, */*",
+    "accept-language": "ru,en;q=0.9",
+    "content-type": "application/json",
+    "origin": "https://neuraverse.neuraprotocol.io",
+    "priority": "u=1, i",
+    "referer": "https://neuraverse.neuraprotocol.io/",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-site",
+}

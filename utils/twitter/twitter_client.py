@@ -2,7 +2,6 @@ import urllib.parse
 from dataclasses import dataclass
 from typing import Any, Optional
 
-from curl_cffi.requests import Response
 from loguru import logger
 
 import libs.baseAsyncSession as BaseAsyncSession
@@ -24,7 +23,6 @@ class TwitterOauthData:
     auth_token: str
     state_verifier_token: str
     callback_url: str
-    callback_response: Response
 
 
 @dataclass
@@ -411,7 +409,6 @@ class TwitterClient:
             if not initialize:
                 raise Exception("Can't initialize twitter client")
 
-        browser = Browser(wallet=self.user)
         logger.debug(f"{self.user} Requesting Twitter authorization parameters")
 
         parsed_url = urllib.parse.urlparse(twitter_auth_url)
@@ -449,19 +446,4 @@ class TwitterClient:
 
         callback_url = f"{redirect_uri}?state={state}&code={auth_code}"
 
-        callback_headers = {
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Encoding": "gzip, deflate",
-            "Referer": "https://x.com/",
-            "Upgrade-Insecure-Requests": "1",
-            "Sec-Fetch-Dest": "document",
-            "Sec-Fetch-Mode": "navigate",
-            "Sec-Fetch-Site": "cross-site",
-        }
-
-        resp = await browser.get(
-            url=callback_url,
-            headers=callback_headers,
-        )
-
-        return TwitterOauthData(auth_token=auth_code, state_verifier_token=state, callback_url=callback_url, callback_response=resp)
+        return TwitterOauthData(auth_token=auth_code, state_verifier_token=state, callback_url=callback_url)

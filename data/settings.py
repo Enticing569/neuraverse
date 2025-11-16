@@ -29,9 +29,30 @@ class Settings(Singleton):
         self.random_pause_wallet_after_completion_min = json_data.get("random_pause_wallet_after_completion", {}).get("min")
         self.random_pause_wallet_after_completion_max = json_data.get("random_pause_wallet_after_completion", {}).get("max")
 
-        self.tg_bot_id = json_data.get("tg_bot_id", "")
-        self.tg_user_id = json_data.get("tg_user_id", "")
-        self.retry = json_data.get("retry", {})
+        self.swaps_count_min = json_data.get("swaps_count", {}).get("min")
+        self.swaps_count_max = json_data.get("swaps_count", {}).get("max")
+        self.swaps_percent_min = json_data.get("swaps_percent", {}).get("min")
+        self.swaps_percent_max = json_data.get("swaps_percent", {}).get("max")
+
+        self.bridge_count_min = json_data.get("bridge_count", {}).get("min")
+        self.bridge_count_max = json_data.get("bridge_count", {}).get("max")
+        self.brige_percet_min = json_data.get("brige_percet", {}).get("min")
+        self.brige_percet_max = json_data.get("brige_percet", {}).get("max")
+        self.use_bridge = json_data.get("use_bridge", True)
+
+        self.ai_chat_count_min = json_data.get("ai_chat_count", {}).get("min")
+        self.ai_chat_count_max = json_data.get("ai_chat_count", {}).get("max")
+        self.questions_for_ai_list = json_data.get("questions_for_ai_list", [])
+
+        self.min_native_balance = json_data.get("min_native_balance", 1)
+        self.max_gas_price = json_data.get("max_gas_price", 700)
+
+        self.omnihub_nft_mint_count_per_transaction_min = json_data.get("omnihub_nft_mint_count_per_transaction", {}).get("min")
+        self.omnihub_nft_mint_count_per_transaction_max = json_data.get("omnihub_nft_mint_count_per_transaction", {}).get("max")
+
+        self.omnihub_repeat_if_already_minted = json_data.get("omnihub_repeat_if_already_minted", False)
+
+        self.capmonster_api_key = json_data.get("capmonster_api_key", "")
 
 
 # Configure the logger based on the settings

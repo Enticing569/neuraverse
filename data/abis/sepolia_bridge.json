@@ -1,0 +1,22 @@
+[
+    {
+        "inputs": [
+            {"internalType": "uint256", "name": "assets", "type": "uint256"},
+            {"internalType": "address", "name": "receiver", "type": "address"}
+        ],
+        "name": "deposit",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {"internalType": "bytes", "name": "encodedMessage", "type": "bytes"},
+            {"internalType": "bytes[]", "name": "messageSignatures", "type": "bytes[]"}
+        ],
+        "name": "claim",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    }
+]

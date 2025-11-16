@@ -449,7 +449,7 @@ class Networks:
 
     Sepolia = Network(
         name="sepolia",
-        rpc="https://rpc.sepolia.org",
+        rpc=RPC_MAP["sepolia"],
         chain_id=11155111,
         tx_type=2,
         coin_symbol="ETH",
@@ -471,6 +471,16 @@ class Networks:
         decimals=18,
         explorer="",
         api=None,
+    )
+
+    NeuraTestnet = Network(
+        name="neura testnet",
+        rpc=RPC_MAP["neura"],
+        chain_id=267,
+        tx_type=2,
+        coin_symbol="ANKR",
+        decimals=18,
+        explorer="https://testnet-blockscout.infra.neuraprotocol.io/",
     )
 
 

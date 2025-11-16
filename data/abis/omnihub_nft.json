@@ -1,0 +1,31 @@
+[
+    {
+        "type": "function",
+        "name": "mintNFT",
+        "stateMutability": "payable",
+        "inputs": [
+            {"name": "phaseId",      "type": "uint256"},
+            {"name": "quantity",     "type": "uint256"},
+            {"name": "paymentToken", "type": "uint256"},
+            {"name": "data",         "type": "bytes"}
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "balanceOf",
+        "stateMutability": "view",
+        "inputs": [{"name": "owner", "type": "address"}],
+        "outputs": [{"name": "", "type": "uint256"}]
+    },
+    {
+        "type": "function",
+        "name": "getMintPrice",
+        "stateMutability": "view",
+        "inputs": [
+            {"name": "phaseId",  "type": "uint256"},
+            {"name": "quantity", "type": "uint256"}
+        ],
+        "outputs": [{"name": "", "type": "uint256"}]
+    }
+]

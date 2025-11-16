@@ -16,4 +16,6 @@ RPC_MAP = {
     "gravity": "https://rpc.gravity.xyz",
     "irys": "https://testnet-rpc.irys.xyz/v1/execution-rpc",
     "linea": "https://rpc.linea.build",
+    "sepolia": "https://ethereum-sepolia-rpc.publicnode.com",
+    "neura": "https://testnet.rpc.neuraprotocol.io",
 }

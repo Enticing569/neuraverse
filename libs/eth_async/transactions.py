@@ -175,7 +175,8 @@ class Transactions:
             tx_params["from"] = self.client.account.address
 
         if "gasPrice" not in tx_params and "maxFeePerGas" not in tx_params:
-            gas_price = (await self.gas_price()).Wei
+            gas_price = int((await self.gas_price()).Wei * 1.1)
+            
             if self.client.network.tx_type == 2:
                 tx_params["maxFeePerGas"] = gas_price
 
@@ -183,7 +184,7 @@ class Transactions:
                 tx_params["gasPrice"] = gas_price
 
         elif "gasPrice" in tx_params and not int(tx_params["gasPrice"]):
-            tx_params["gasPrice"] = (await self.gas_price()).Wei
+            tx_params["gasPrice"] = int((await self.gas_price()).Wei * 1.1)
 
         if "maxFeePerGas" in tx_params and "maxPriorityFeePerGas" not in tx_params:
             try:
@@ -325,8 +326,6 @@ class Transactions:
             "nonce": nonce,
             "to": contract.address,
             "data": contract.encode_abi("approve", args=tx_args.tuple()),
-            "maxFeePerGas": await self.client.w3.eth.max_priority_fee + Web3.to_wei(0.2, "gwei"),
-            "maxPriorityFeePerGas": await self.client.w3.eth.max_priority_fee,
         }
 
         if gas_limit:

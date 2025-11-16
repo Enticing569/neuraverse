@@ -26,12 +26,18 @@ show_wallet_address_logs: false
 check_git_updates: true
 
 # the log level for the application. Options: DEBUG, INFO, WARNING, ERROR
-log_level : INFO
+log_level: INFO
 
-# Delay before running the same wallet again after it has completed all actions (1 - 2 hrs default)
+# Minimum native token balance in ANKR required for wallet to be processed
+min_native_balance: 1
+
+# Maximum gas price allowed for execution (in Gwei)
+max_gas_price: 700
+
+# Delay before running the same wallet again after it has completed all actions (5 - 8 hrs default)
 random_pause_wallet_after_completion:
-  min: 3600
-  max: 7200
+  min: 18000
+  max: 28800
 
 # Random pause between wallets in seconds
 random_pause_between_wallets:
@@ -47,3 +53,95 @@ random_pause_between_actions:
 random_pause_start_wallet:
   min: 0
   max: 60
+
+# Onchain Swaps count
+swaps_count:
+  min: 5
+  max: 15
+
+# Onchain Swaps percent
+swaps_percent:
+  min: 30
+  max: 50
+  
+# Whether to use bridge functionality in the workflow
+use_bridge: true
+
+# Onchaun Bridge percent
+bridge_percet:
+  min: 10
+  max: 20
+
+# Onchaun Bridge count
+bridge_count:
+  min: 1
+  max: 2
+
+# Number of OmniHub NFTs to mint per transaction (1 by default)
+omnihub_nft_mint_count_per_transaction: 
+  min: 1
+  max: 1
+
+# Whether to repeat minting if NFT has already been minted before (True = retry, False = skip)
+omnihub_repeat_if_already_minted: False
+
+# Api Key from https://dash.capmonster.cloud/
+capmonster_api_key: ""
+
+# AI chat interactions to perform per wallet
+ai_chat_count:
+  min: 1
+  max: 2
+
+# List of questions that the AI can randomly ask in chat interactions 
+questions_for_ai_list:
+  - What is Bitcoin's current price?
+  - Show me Ethereum price
+  - What's the price of BNB?
+  - Current Solana price?
+  - What's AVAX trading at?
+  - Show me MATIC price
+  - Current price of DOT?
+  - What's the XRP price now?
+  - Show me ATOM price
+  - What's the current LINK price?
+  - Show me ADA price
+  - What's NEAR trading at?
+  - Current price of FTM?
+  - What's the ALGO price?
+  - Show me DOGE price
+  - What's SHIB trading at?
+  - Current price of UNI?
+  - What's the AAVE price?
+  - Show me LTC price
+  - What's ETC trading at?
+  - Show me the price of SAND
+  - What's MANA's current price?
+  - Current price of APE?
+  - What's the GRT price?
+  - Show me BAT price
+  - What's ENJ trading at?
+  - Current price of CHZ?
+  - What's the CAKE price?
+  - Show me VET price
+  - What's ONE trading at?
+  - Show me the price of GALA
+  - What's THETA's current price?
+  - Current price of ICP?
+  - What's the FIL price?
+  - Show me EOS price
+  - What's XTZ trading at?
+  - Show me the price of ZIL
+  - What's WAVES current price?
+  - Current price of KSM?
+  - What's the DASH price?
+  - Show me NEO price
+  - What's XMR trading at?
+  - Show me the price of IOTA
+  - What's EGLD's current price?
+  - Current price of COMP?
+  - What's the SNX price?
+  - Show me MKR price
+  - What's CRV trading at?
+  - Show me the price of RUNE
+  - What's 1INCH current price?
