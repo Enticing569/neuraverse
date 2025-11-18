@@ -86,7 +86,7 @@ class Bridge(Base):
 
             tx_params = TxArgs(encodedMessage=encoded_message, messageSignatures=signatures_bytes)
 
-            data = await bridge_contract.encode_abi("claim", args=tx_params)
+            data = bridge_contract.encode_abi("claim", args=tx_params)
 
             transaction = await self.client.transactions.sign_and_send(TxParams(to=bridge_contract.address, data=data))
             recipient = await transaction.wait_for_receipt(client=self.client, timeout=300)
