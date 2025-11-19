@@ -37,6 +37,6 @@ class Contracts(Singleton):
 
     OMNIHUB_NFT = RawContract(
         title="Omnihub_nft",
-        address="0x6f38636175e178e1d2004431ffcb91a1030282ac",
+        address="0x6f38636175E178e1d2004431fFcb91a1030282aC",
         abi=cast(list[dict[str, Any]], read_json((ABIS_DIR, "omnihub_nft.json"))),
     )
